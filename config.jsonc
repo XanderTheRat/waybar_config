@@ -50,14 +50,16 @@
     },
 
     "tray": {
-        "spacing": 10
+        "spacing": 10,
+        "icon-size": 21,
+        "show-passive-items": false,
+        "reverse-direction": false
     },
 
     "clock": {
         "format": "{:%A %d %B %Y, %H:%M:%S}",
         "interval": 1,
-        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-        "on-click" : "flatpak run org.gnome.Calendar"
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
     },
 
     "custom/clock": {
@@ -85,6 +87,7 @@
         },
         "format": "{capacity}% {icon}",
         "format-full": "{capacity}% {icon}",
+        "format-charging": "{capacity}% ",
         "format-plugged": "{capacity}% ",
         "format-icons": ["", "", "", "", ""],
        	"interval": 1
@@ -131,4 +134,3 @@
 	}
 	
 }
-

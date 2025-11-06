@@ -85,7 +85,6 @@ window#waybar {
 
 #pulseaudio,
 #custom-network,
-#battery,
 #mpris,
 #tray {
     padding: 2px 12px;
@@ -95,6 +94,14 @@ window#waybar {
     transition: all 0.2s ease;
 }
 
+
+#battery {
+	padding: 2px 12px;
+	margin: 0  2px;
+	border-radius: 12px;
+	background: rgba(255,255,255, 0.08);
+	transition: all 1.5s ease;
+}
 
 #pulseaudio:hover,
 #custom-network:hover,
@@ -115,10 +122,10 @@ window#waybar {
 }
 
 
-
+/*
 #custom-network {
     color: #63b3ed;
-}
+}*/
 
 #custom-network.disconnected {
     color: #fc8181;
