@@ -121,12 +121,6 @@ window#waybar {
     background: rgba(113, 128, 150, 0.2);
 }
 
-
-/*
-#custom-network {
-    color: #63b3ed;
-}*/
-
 #custom-network.disconnected {
     color: #fc8181;
     background: rgba(252, 129, 129, 0.15);
