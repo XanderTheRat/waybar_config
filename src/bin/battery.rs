@@ -3,79 +3,80 @@ use std::fs;
 use std::path::Path;
 
 fn main() -> Result<(), Box<dyn std::error::Error>>{
-	let etat = ["", "", "", "", ""];
+	let state = ["", "", "", "", ""];
 
-    fn affiche_batterie() -> Result<(usize, String, &'static str), Box<dyn std::error::Error>>{
-		let couleur_batterie_bon = "#68d391";
-		let couleur_batterie_chargement = "#48bb78";
-		let couleur_batterie_branche = "#38b2ac";
-		let couleur_batterie_faible = "#f6ad55";
+    fn show_battery() -> Result<(usize, String, &'static str), Box<dyn std::error::Error>>{
+		let color_battery = "#68d391";
+		let color_charging = "#48bb78";
+		let color_plugged = "#38b2ac";
+		let color_low_battery = "#f6ad55";
+
+		let warning_state = 30;
+		let critical_state = 15;
 								
-		let output_batterie = Command::new("cat").arg("/sys/class/power_supply/BAT0/capacity").output()?;
-		let output_batterie_etat = Command::new("cat").arg("/sys/class/power_supply/BAT0/status").output()?;
-		let batterie_etat_pas_trim = String::from_utf8_lossy(&output_batterie_etat.stdout);
+		let output_battery = Command::new("cat").arg("/sys/class/power_supply/BAT0/capacity").output()?;
+		let output_battery_state = Command::new("cat").arg("/sys/class/power_supply/BAT0/status").output()?;
+		let battery_state_not_trim = String::from_utf8_lossy(&output_battery_state.stdout);
 									
-		let batterie_output = String::from_utf8_lossy(&output_batterie.stdout);
-		let batterie = batterie_output.trim();
-		let batterie_etat = batterie_etat_pas_trim.trim().to_string();
-		let batterie_pourcent = batterie.parse::<usize>()?;
-		let _: Result<f64, Box<dyn std::error::Error>> = Ok(batterie_pourcent as f64);
-		let couleur;
+		let battery_output = String::from_utf8_lossy(&output_battery.stdout);
+		let battery = battery_output.trim();
+		let battery_state = battery_state_not_trim.trim().to_string();
+		let battery_percent = battery.parse::<usize>()?;
+		let _: Result<f64, Box<dyn std::error::Error>> = Ok(battery_percent as f64);
+		let color;
 
-		if batterie_etat == "Charging" {
-			couleur = couleur_batterie_chargement;		
+		if battery_state == "Charging" {
+			color = color_charging;		
 		}
-		else if batterie_etat == "Not charging" {
-			couleur = couleur_batterie_branche;
+		else if battery_state == "Not charging" {
+			color = color_plugged;
 		}
-		else if batterie_pourcent > 30 {
-				couleur = couleur_batterie_bon;
+		else if battery_percent > warning_state {
+				color = color_battery;
 		}
-		else if batterie_pourcent > 15 {
-			couleur = couleur_batterie_faible;
+		else if battery_percent > critical_state {
+			color = color_low_battery;
 		}
 		else {
-			couleur = "#FFFFFF"
+			color = "#FFFFFF"
 		}
-		Ok((batterie_pourcent, batterie_etat, couleur))							
+		Ok((battery_percent, battery_state, color))							
 	}
 
-	fn affichage_tps_restant() -> Result<(i32, i32), Box<dyn std::error::Error>>{
+	fn show_remaining_time() -> Result<(i32, i32), Box<dyn std::error::Error>>{
 		let energy_now = Command::new("cat").arg("/sys/class/power_supply/BAT0/charge_now").output()?;
 		let energy_full = Command::new("cat").arg("/sys/class/power_supply/BAT0/charge_full").output()?;
 		let power_now = Command::new("cat").arg("/sys/class/power_supply/BAT0/current_now").output()?;    
-		let output_batterie_etat = Command::new("cat").arg("/sys/class/power_supply/BAT0/status").output()?;
+		let output_battery_state = Command::new("cat").arg("/sys/class/power_supply/BAT0/status").output()?;
 			     		
-		let energie_restante_pas_trim = String::from_utf8_lossy(&energy_now.stdout);
-		let capacite_total_batterie_pas_trim = String::from_utf8_lossy(&energy_full.stdout);
-		let energie_consommee_pas_trim = String::from_utf8_lossy(&power_now.stdout);
-		let batterie_etat_pas_trim = String::from_utf8_lossy(&output_batterie_etat.stdout); 				
+		let remaining_power_not_trim = String::from_utf8_lossy(&energy_now.stdout);
+		let total_battery_capacity_not_trim = String::from_utf8_lossy(&energy_full.stdout);
+		let used_battery_not_trim = String::from_utf8_lossy(&power_now.stdout);
+		let battery_state_not_trim = String::from_utf8_lossy(&output_battery_state.stdout); 				
 				
-		let energie_consommee = energie_consommee_pas_trim.trim().parse::<f64>()?;
-		let capacite_total_batterie = capacite_total_batterie_pas_trim.trim().parse::<f64>()?;
-		let energie_restante = energie_restante_pas_trim.trim().parse::<f64>()?;
-		let batterie_etat = batterie_etat_pas_trim.trim();
+		let used_battery = used_battery_not_trim.trim().parse::<f64>()?;
+		let total_battery_capacity = total_battery_capacity_not_trim.trim().parse::<f64>()?;
+		let remaining_power = remaining_power_not_trim.trim().parse::<f64>()?;
+		let battery_state = battery_state_not_trim.trim();
 
-		let _ = Ok::<f64, Box<dyn std::error::Error>>(energie_consommee);
-		let _ = Ok::<f64, Box<dyn std::error::Error>>(capacite_total_batterie);
-		let _ = Ok::<f64, Box<dyn std::error::Error>>(energie_restante);
+		let _ = Ok::<f64, Box<dyn std::error::Error>>(used_battery);
+		let _ = Ok::<f64, Box<dyn std::error::Error>>(total_battery_capacity);
+		let _ = Ok::<f64, Box<dyn std::error::Error>>(remaining_power);
 
-	    let heures_restantes:f64;
-	    
-	    if energie_consommee == 0.0 {
-        	heures_restantes = 0.0;
-    	}
-		else if batterie_etat == "Charging" || batterie_etat == "Not Charging" {
-        	heures_restantes=(capacite_total_batterie - energie_restante) / energie_consommee;
+	    let remaining_hours:f64;
+
+	    // TODO : fix the output of time
+		if battery_state == "Charging" || battery_state == "Not Charging" {
+        	remaining_hours=(total_battery_capacity - remaining_power) / used_battery;
     	} else {
-        	heures_restantes= energie_restante / energie_consommee;
+        	remaining_hours= remaining_power / used_battery;
     	}
 
-		let minutes_depuis_heures = heures_restantes * 60.0;
-		let mut minutes_restantes = minutes_depuis_heures.round() as i32;
-		minutes_restantes /= 60;
+		let minute = remaining_hours * 60.0;
+		let mut remaining_minute = minute.round() as i32;
+		remaining_minute /= 60;
 		
-		Ok((heures_restantes.round() as i32, minutes_restantes))   		    		
+		Ok((remaining_hours.round() as i32, remaining_minute))   		    		
 	}
 
 	let state_file = "/home/martin/.config/scripts.rs/waybar_scripts/battery_state";
@@ -86,33 +87,33 @@ fn main() -> Result<(), Box<dyn std::error::Error>>{
 			let _: Result<f64, Box<dyn std::error::Error>> = Ok(mode.into());
 			match mode {
 				1 => {
-				let Ok((batterie_pourcent, batterie_etat, couleur)) = affiche_batterie() else { todo!() };
-				if batterie_etat == "Charging" {
-					println!("<span foreground='{}'>{}% </span>",couleur, batterie_pourcent);		
+				let Ok((battery_percent, battery_state, color)) = show_battery() else { todo!() };
+				if battery_state == "Charging" {
+					println!("<span foreground='{}'>{}% </span>",color, battery_percent);		
 				}
-				else if batterie_etat == "Not charging" {
-					println!("<span foreground='{}'>{}% </span>",  couleur, batterie_pourcent)
+				else if battery_state == "Not charging" {
+					println!("<span foreground='{}'>{}% </span>",  color, battery_percent)
 				}
-				else if batterie_pourcent > 30 {
-					println!("<span foreground='{}'>{}% {}</span>", couleur, batterie_pourcent, etat[batterie_pourcent/20]);
+				else if battery_percent > 30 {
+					println!("<span foreground='{}'>{}% {}</span>", color, battery_percent, state[battery_percent/20]);
 				}
 				else {
-						println!("<span foreground={}>{}% {}</span>", couleur, batterie_pourcent, etat[batterie_pourcent/20]);
+						println!("<span foreground={}>{}% {}</span>", color, battery_percent, state[battery_percent/20]);
 					}	
 				}
 				2 => {
-					let batterie_etat = Command::new("cat").arg("/sys/class/power_supply/BAT0/status").output()?;
-					let batterie_etat_pas_trim = String::from_utf8_lossy(&batterie_etat.stdout);
-					let status = batterie_etat_pas_trim.trim().to_string();
+					let battery_state = Command::new("cat").arg("/sys/class/power_supply/BAT0/status").output()?;
+					let battery_state_not_trim = String::from_utf8_lossy(&battery_state.stdout);
+					let status = battery_state_not_trim.trim().to_string();
 
-					let couleur:&str;
+					let color:&str;
 					if status == "Charging" || status == "Not charging" {
-						couleur = "#40B792";
-						println!("<span foreground='{}'>Batterie en chargement</span>", couleur);
+						color = "#40B792";
+						println!("<span foreground='{}'>Batterie en chargement</span>", color);
 					}else {
-						couleur = "#68d391";
-						let Ok((heures_restantes, minutes_restantes)) = affichage_tps_restant() else { todo!() };
-						println!("<span foreground='{}'>{} heure(s) {} minutes</span>", couleur,heures_restantes, minutes_restantes)
+						color = "#68d391";
+						let Ok((remaining_hours, remaining_minute)) = show_remaining_time() else { todo!() };
+						println!("<span foreground='{}'>{} heure(s) {} minutes</span>", color,remaining_hours, remaining_minute)
 					}
 				} 
 				_ => {}

@@ -34,24 +34,24 @@ fn main() -> Result<(), Box<dyn std::error::Error>>{
 				let vec_ip: Vec<&str> = ip.rsplit('\n').collect();
 				let output_ip: Vec<&str> = vec_ip[0].split_whitespace().collect();
 
-				let couleur:&str;
+				let color:&str;
 				let status_mode: i8;
 				if network_mode == 2 {
-					couleur = "#a78bfa";
+					color = "#a78bfa";
 					status_mode = 4;
 				}
 				else {
-					couleur = "#fb923c";
+					color = "#fb923c";
 					status_mode = 6;
 				}
 
-				println!("<span foreground='{}'>ipv{}:</span><span foreground='#63b3ed'> {}</span>",couleur, status_mode, output_ip[network_mode as usize]);
+				println!("<span foreground='{}'>ipv{}:</span><span foreground='#63b3ed'> {}</span>",color, status_mode, output_ip[network_mode as usize]);
 			}
 			_ => todo!()
 		}
 	}
 	else {
-		println!("File not exists");
+		println!("Le fichier n'existe pas !");
 	}
 
 	Ok(())

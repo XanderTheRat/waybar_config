@@ -15,12 +15,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>>{
 	for instance in reader.lines() {
 		let line:String = instance?;
 		if line.starts_with("Mem") {
-			let memoire:Vec<&str> = line.split_whitespace().collect();
-			if memoire.len() >= 3 {
-				let utilisee:f64 = memoire[2].parse().unwrap_or(0.0);
-				let total: f64 = memoire[1].parse().unwrap_or(1.0);
-				let pourcentage = (utilisee*100.0/total).round() as u32;
-				println!("<span foreground='{}'>CPU {}%</span> | <span foreground='{}'>MEM {}%</span>", couleur_cpu, cpu, couleur_mem, pourcentage);
+			let memory:Vec<&str> = line.split_whitespace().collect();
+			if memory.len() >= 3 {
+				let used:f64 = memory[2].parse()?;
+				let total: f64 = memory[1].parse()?;
+
+				let percent = (used*100.0/total).round() as u32;
+				println!("<span foreground='{}'>CPU {}%</span> | <span foreground='{}'>MEM {}%</span>", couleur_cpu, cpu, couleur_mem, percent);
 				
 			}
 		}
