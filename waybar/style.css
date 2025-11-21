@@ -73,7 +73,7 @@ window#waybar {
     background: transparent;
 }
 
-#clock, #custom-clock {
+#custom-date, #custom-clock {
     background: linear-gradient(#667eea 0%, #5a67d8 100%);
     color: #ffffff;
     padding: 2px 12px;

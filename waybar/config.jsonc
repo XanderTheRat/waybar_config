@@ -10,14 +10,15 @@
         "sway/scratchpad"
     ],
     "modules-center": [
-        "custom/clock",
-        "mpris"
+        "custom/date",
+        "mpris",
+    	"custom/clock",
     ],
     "modules-right": [
-        "pulseaudio",
         "custom/network",
 		"custom/sysinfo",
         "custom/battery",
+        "pulseaudio",
         "tray"
     ],
 
@@ -60,8 +61,13 @@
     	},
     	
     "custom/clock": {
-      "exec": "date '+%A %d %B %H:%M:%S'",
+      "exec": "date '+%H:%M:%S'",
       "interval": 1
+    },
+
+    "custom/date": {
+    	"exec": "date '+%a %d %b'",
+    	"interval":3600,
     },
     
     "battery": {
