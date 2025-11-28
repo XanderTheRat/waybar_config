@@ -17,7 +17,6 @@ window#waybar {
     border-radius: 10px;
     padding: 2px 6px;
 }
-
 #workspaces button {
     padding: 2px 10px;
     margin: 0 2px;
@@ -27,24 +26,22 @@ window#waybar {
     border-radius: 6px;
     transition: all 0.2s ease;
 }
-
 #workspaces button:hover {
     background: rgba(66, 153, 225, 0.2);
     color: #63b3ed;
 }
-
 #workspaces button.active,
 #workspaces button.focused {
     background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
     color: #ffffff;
     font-weight: 600;
 }
-
 #workspaces button.urgent {
     background: linear-gradient(135deg, #fc8181 0%, #f56565 100%);
     color: #ffffff;
     animation: urgent-blink 1s ease-in-out infinite;
 }
+
 
 @keyframes urgent-blink {
 	0% {opacity: 1;}
@@ -68,7 +65,6 @@ window#waybar {
     margin: 0 4px;
     border-radius: 8px;
 }
-
 #scratchpad.empty {
     background: transparent;
 }
@@ -82,15 +78,13 @@ window#waybar {
     font-weight: 600;
     transition: all 0.2s ease;
 }
-
 #pulseaudio,
-#custom-network,
 #mpris,
 #bluetooth,
 #custom-network-settings,
 #custom-cpu,
 #custom-ram,
-#tray {
+#custom-right, #custom-left {
     padding: 2px 12px;
     margin: 0 2px;
     border-radius: 8px;
@@ -98,29 +92,21 @@ window#waybar {
     transition: all 0.2s ease;
 }
 
+
 #group-network,
 #group-sysinfo {
-    background: rgba(255, 255, 255, 0.08);
+    background: linear-gradient(#566bc2 0%, #4d59b0 100%);
     padding: 2px 10px; 
     margin: 0 2px;
     transition: all 0.3s ease;
 }
 
-#group-network:hover,
-#group-sysinfo:hover {
-    background: rgba(255, 255, 255, 0.15);
-    padding-right: 20px;
-}
 
-#custom-network {
-    margin-right: 5px;
-    transition: color 0.3s ease;
-}
-
-#custom-battery {
+#custom-battery,
+#custom-network{
 	padding: 2px 12px;
 	margin: 0  2px;
-	border-radius: 12px;
+	border-radius: 8px;
 	background: rgba(255,255,255, 0.08);
 	transition: all 1.5s ease;
 }
@@ -128,6 +114,7 @@ window#waybar {
 #custom-battery span {
 	padding:10px;
 }
+
 
 #pulseaudio:hover,
 #custom-network:hover,
@@ -157,20 +144,6 @@ window#waybar {
         background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
     }
 }
-
-#tray {
-    padding: 2px 10px;
-}
-
-#tray > .passive {
-    -gtk-icon-effect: dim;
-}
-
-#tray > .needs-attention {
-    -gtk-icon-effect: highlight;
-    background-color: #fc8181;
-}
-
 
 #mpris {
 	color: #1DB954;

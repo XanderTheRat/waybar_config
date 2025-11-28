@@ -5,14 +5,12 @@
     "spacing": 6,
     
     "modules-left": [
-        "sway/workspaces",
-        "sway/mode",
-        "sway/scratchpad"
+        "group/sway"
     ],
     "modules-center": [
-        "custom/date",
+        "group/date",
         "mpris",
-    	"custom/clock",
+    	"group/clock"
     ],
     "modules-right": [
         "group/network",
@@ -47,6 +45,19 @@
         "tooltip-format": "{app}: {title}"
     },
 
+    "group/sway": {
+        "orientation": "horizontal",
+        "drawer": {
+            "transition-duration": 500,
+            "children-class": "sway-drawer-item",
+            "transition-left-to-right": true
+        },
+        "modules":[
+            "sway/workspaces",
+            "sway/mode",
+            "sway/scratchpad"
+        ]
+    },
 
     "group/network": {
         "orientation": "horizontal",
@@ -76,7 +87,31 @@
             "pulseaudio",
         ]
     },
-    	
+
+    "group/date": {
+        "orientation": "horizontal",
+        "drawer": {
+            "transition-duration": 500,
+            "children-class": "sway-drawer-item",
+            "transition-left-to-right": true
+        },
+        "modules":[
+            "custom/left",
+            "custom/date"
+        ]
+    },
+    "group/clock": {
+        "orientation": "horizontal",
+        "drawer": {
+            "transition-duration": 500,
+            "children-class": "sway-drawer-item",
+            "transition-left-to-right": false
+        },
+        "modules":[
+            "custom/right",
+            "custom/clock"
+        ]
+    },
     "custom/clock": {
       "exec": "date '+%H:%M:%S'",
       "interval": 1
@@ -114,7 +149,7 @@
 	    "player": "spotify",
 	    "format": " {title}",
 	    "format-paused": "⏸ {title}",
-	    "format-stopped": "",
+	    "format-stopped": " Nothing playing...",
 	    "interval": 1,
 	    "on-click": "playerctl play-pause",
 	    "on-scroll-up": "playerctl next",
@@ -154,5 +189,16 @@
       "exec": "~/.config/scripts.rs/target/release/cpu",
       "interval": 1,
       "tooltip": false
-    }
+    },
+
+
+    "custom/left": {
+        "format" : "",
+        "tooltip": false
+    },
+    "custom/right": {
+        "format" : "",
+        "tooltip": false
+    },
+
 }
